@@ -1,8 +1,7 @@
 "use client"
 
 import { api } from "@/libs/api";
-import { Box, Typography, TextField, Button, Link as MuiLink, Alert } from "@mui/material";
-import Link from "next/link";
+import { Box, Typography, TextField, Button, Alert } from "@mui/material";
 import { useState, FormEvent } from 'react';
 
 const Page = () => {
