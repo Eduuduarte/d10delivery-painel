@@ -14,5 +14,19 @@ export const api = {
                 }
             }, 1000)
         })
+    },
+    forgotPasswor: async (email: string): Promise<{ error: string }> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve({ error: ''});
+            }, 1000)
+        });
+    },
+    redefinePassword: async (password: string, token: string): Promise<{ error: string }> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve({ error: ''})
+            }, 1000);
+        })
     }
 }
