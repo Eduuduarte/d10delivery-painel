@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const Page = () => {
     const [searchgInput, setSearchInput] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const handleSearchInput = () => {
 
