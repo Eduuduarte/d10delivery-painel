@@ -2,8 +2,11 @@ import { Menu } from "@mui/icons-material"
 import { AppBar, Box, Button, Toolbar, Typography, IconButton } from "@mui/material"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { HeaderDrawer } from "./HeaderDrawer"
+import { useState } from "react"
 
 export const Header = () => {
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const router = useRouter();
 
     const pageTitle = "Painel D10Delivery"
@@ -13,7 +16,7 @@ export const Header = () => {
     }
 
     const handleDrawerTougle = () => {
-
+        setDrawerOpen(!drawerOpen)
     }
 
     return (
@@ -40,7 +43,7 @@ export const Header = () => {
                         >{pageTitle}</Link>
 
                     </Typography>
-                    <Box sx={{ display: { sx: "none", sm: "block" } }}>
+                    <Box sx={{ display: { xs: "none", sm: "block" } }}>
                         <Link href="/pedidos" style={{ textDecoration: "none" }}>
                             <Button sx={{ color: "#FFF" }}>Pedidos</Button>
                         </Link>
@@ -54,6 +57,14 @@ export const Header = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
+            <Box component="nav">
+                <HeaderDrawer
+                    open={drawerOpen}
+                    onClose={handleDrawerTougle}
+                    title={pageTitle}
+                    onLogout={hendleLogout}
+                />
+            </Box>
         </>
     )
 }
