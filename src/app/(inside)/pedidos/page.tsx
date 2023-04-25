@@ -1,12 +1,30 @@
 "use client";
 
+import { OrderItem } from "@/components/OrderItem";
+import { api } from "@/libs/api";
+import { Order } from "@/types/Order";
 import { Refresh, Search } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Grid, InputAdornment, Skeleton, TextField, Typography } from "@mui/material"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Page = () => {
     const [searchgInput, setSearchInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [orders, setOrders] = useState<Order[]>([]);
+
+    const getOrders = async () => {
+        setSearchInput('');
+        setOrders([]);
+
+        setLoading(true);
+        const orderList : Order[] = await api.getOrders();
+        setOrders(orderList);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        getOrders();
+    }, [])
 
     const handleSearchInput = () => {
 
@@ -24,7 +42,7 @@ const Page = () => {
                     <Typography component="h5" variant="h5" sx={{ color: "#555", mr: 2 }}>Pedidos</Typography>
                     {loading && <CircularProgress />}
                     {!loading &&
-                        <Button size="small" sx={{ justifyContent: { xs: 'flex-start', md: 'center' } }}>
+                        <Button onClick={getOrders} size="small" sx={{ justifyContent: { xs: 'flex-start', md: 'center' } }}>
                             <Refresh />
                             <Typography
                                 component="div" sx={{ color: "#555", display: { xs: 'none', sm: 'block' } }}
@@ -70,6 +88,15 @@ const Page = () => {
                         </Grid>
                     </>
                 }
+
+                {!loading && orders.map((item, index) => (
+                    <Grid key={index} item xs={1}>
+                        <OrderItem 
+                            item={item}
+                        />
+                    </Grid>
+                ))}
+
             </Grid>
 
         </Box>
