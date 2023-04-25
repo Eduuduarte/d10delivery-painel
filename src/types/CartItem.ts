@@ -1,6 +1,6 @@
 import { Product } from "./Product";
 
 export type CartItem = {
-    qr: number;
+    qt: number;
     product: Product;
 }
