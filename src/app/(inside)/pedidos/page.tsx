@@ -3,6 +3,7 @@
 import { OrderItem } from "@/components/OrderItem";
 import { api } from "@/libs/api";
 import { Order } from "@/types/Order";
+import { OrderStatus } from "@/types/OrderStatus";
 import { Refresh, Search } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Grid, InputAdornment, Skeleton, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
@@ -32,6 +33,11 @@ const Page = () => {
 
     const handleSearchKey = () => {
 
+    }
+
+    const handleChangeStatus = async (id: number, newStatus: OrderStatus) => {
+        await api.changeOrderStatus(id, newStatus);
+        getOrders();
     }
 
     return (
@@ -93,6 +99,7 @@ const Page = () => {
                     <Grid key={index} item xs={1}>
                         <OrderItem 
                             item={item}
+                            onChangeStatus={handleChangeStatus}
                         />
                     </Grid>
                 ))}
