@@ -69,7 +69,6 @@ const Page = () => {
 
     return (
         <>
-
             <Box sx={{ my: 3, displayPrint: 'none' }}>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
