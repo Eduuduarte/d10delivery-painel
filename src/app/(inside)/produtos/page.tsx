@@ -1,6 +1,8 @@
 "use client";
 
 import { OrderItem } from "@/components/OrderItem";
+import { ProductTableItem } from "@/components/ProductTableItem";
+import { ProductTableSkeleton } from "@/components/ProductTableSkeleton";
 import { api } from "@/libs/api";
 import { dateFormat } from "@/libs/dateFormat";
 import { Category } from "@/types/Category";
@@ -23,13 +25,17 @@ const Page = () => {
     const getProducts = async () => {
         setLoading(true);
 
-        setProducts( await api.getProducts());
-        setCategories( await api.getCategories());
+        setProducts(await api.getProducts());
+        setCategories(await api.getCategories());
 
         setLoading(false);
     }
 
-    const handleNewProduct = () => {}
+    const handleNewProduct = () => { }
+
+    const handleEdit = (product: Product) => {}
+
+    const handleDelete= (product: Product) => {}
 
 
     return (
@@ -47,10 +53,29 @@ const Page = () => {
                             <TableCell>Nome</TableCell>
                             <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Preço</TableCell>
                             <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Categoria</TableCell>
-                            <TableCell sx={{ xs: 50, md: 130 }}>Açoes</TableCell>
+                            <TableCell sx={{ width: {xs: 50, md: 130 } }}>Açoes</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
+
+                        {loading &&
+                            <>
+                                <ProductTableSkeleton />
+                                <ProductTableSkeleton />
+                                <ProductTableSkeleton />
+                            </>
+                        }
+
+                        {!loading &&
+                            products.map(item => (
+                                <ProductTableItem 
+                                    key={item.id}
+                                    item={item}
+                                    onEdit={handleEdit}
+                                    onDelete={handleDelete}
+                                />
+                            ))
+                        }
 
                     </TableBody>
                 </Table>
