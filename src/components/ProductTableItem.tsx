@@ -27,7 +27,7 @@ export const ProductTableItem = ({ item, onEdit, onDelete }: Props) => {
             <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
                 {item.categoty.name}
             </TableCell>
-            <TableCell sx={{ xs: 50, md: 130 }}>
+            <TableCell sx={{ width: {xs: 50, md: 130 } }}>
                 <Button onClick={() => onEdit(item)} size="small"><Edit /></Button>
                 <Button onClick={() => onDelete(item)} size="small"><Delete /></Button>
             </TableCell>

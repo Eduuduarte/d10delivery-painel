@@ -10,13 +10,18 @@ import { Order } from "@/types/Order";
 import { OrderStatus } from "@/types/OrderStatus";
 import { Product } from "@/types/Product";
 import { Refresh, Search } from "@mui/icons-material";
-import { Box, Button, CircularProgress, Grid, InputAdornment, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material"
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, InputAdornment, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material"
 import { KeyboardEvent, useEffect, useState } from "react";
 
 const Page = () => {
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
+
+    const [ showDeleteDialog, setShowDeleteDialog ] = useState(false);
+
+
+
 
     useEffect(() => {
         getProducts();
@@ -35,7 +40,16 @@ const Page = () => {
 
     const handleEdit = (product: Product) => {}
 
-    const handleDelete= (product: Product) => {}
+    
+
+    // Delete Product
+    const handleDelete= (product: Product) => {
+        setShowDeleteDialog(true)
+    }
+
+    const handleConfirmDelete = () => {
+
+    }
 
 
     return (
@@ -79,6 +93,19 @@ const Page = () => {
 
                     </TableBody>
                 </Table>
+
+                <Dialog open={showDeleteDialog}>
+                        <DialogTitle>Tem certeza que deseja deletar esse produto?</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Não é possível voltar atrás após confirmar está ação.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setShowDeleteDialog(false)}>Não</Button>
+                            <Button onClick={handleConfirmDelete}>Sim</Button>
+                        </DialogActions>
+                </Dialog>
             </Box>
         </>
 
