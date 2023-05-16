@@ -2,6 +2,7 @@ import { Category } from "@/types/Category";
 import { Order } from "@/types/Order";
 import { OrderStatus } from "@/types/OrderStatus";
 import { Product } from "@/types/Product";
+import { resolve } from "path";
 
 const tmpProduct: Product = {
     id: 999,
@@ -121,6 +122,13 @@ export const api = {
             setTimeout(() => {
                 resolve(list);
             }, 500)
+        })
+    },
+    deleteProduct: async (id: number): Promise<boolean> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve(true)
+            }, 1000)
         })
     }
 }

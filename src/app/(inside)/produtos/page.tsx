@@ -18,9 +18,9 @@ const Page = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
 
-    const [ showDeleteDialog, setShowDeleteDialog ] = useState(false);
-
-
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [productToDelete, setProductToDelete] = useState<Product>();
+    const [loadingDelete, setLoadingDelete] = useState(false);
 
 
     useEffect(() => {
@@ -44,11 +44,19 @@ const Page = () => {
 
     // Delete Product
     const handleDelete= (product: Product) => {
-        setShowDeleteDialog(true)
+        setProductToDelete(product)
+        setShowDeleteDialog(true);
+
     }
 
-    const handleConfirmDelete = () => {
-
+    const handleConfirmDelete = async () => {
+        if(productToDelete) {
+            setLoadingDelete(true);
+            await api.deleteProduct(productToDelete.id);
+            setShowDeleteDialog(false);
+            setLoadingDelete(false);
+            getProducts();
+        }
     }
 
 
@@ -94,7 +102,7 @@ const Page = () => {
                     </TableBody>
                 </Table>
 
-                <Dialog open={showDeleteDialog}>
+                <Dialog open={showDeleteDialog} onClose={() => !loadingDelete ? setShowDeleteDialog(false) : null}>
                         <DialogTitle>Tem certeza que deseja deletar esse produto?</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
@@ -102,8 +110,8 @@ const Page = () => {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={() => setShowDeleteDialog(false)}>Não</Button>
-                            <Button onClick={handleConfirmDelete}>Sim</Button>
+                            <Button disabled={loadingDelete} onClick={() => setShowDeleteDialog(false)}>Não</Button>
+                            <Button disabled={loadingDelete} onClick={handleConfirmDelete}>Sim</Button>
                         </DialogActions>
                 </Dialog>
             </Box>
