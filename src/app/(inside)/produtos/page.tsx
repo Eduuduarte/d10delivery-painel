@@ -1,6 +1,7 @@
 "use client";
 
 import { OrderItem } from "@/components/OrderItem";
+import { ProductEditDialog } from "@/components/ProductEditDialog";
 import { ProductTableItem } from "@/components/ProductTableItem";
 import { ProductTableSkeleton } from "@/components/ProductTableSkeleton";
 import { api } from "@/libs/api";
@@ -11,7 +12,7 @@ import { OrderStatus } from "@/types/OrderStatus";
 import { Product } from "@/types/Product";
 import { Refresh, Search } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, InputAdornment, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material"
-import { KeyboardEvent, useEffect, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
 
 const Page = () => {
     const [loading, setLoading] = useState(false);
@@ -21,6 +22,10 @@ const Page = () => {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [productToDelete, setProductToDelete] = useState<Product>();
     const [loadingDelete, setLoadingDelete] = useState(false);
+
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+    const [productToEdit, setProductToEdit] = useState<Product>();
+    const [loadingEditDialog, setLoadingEditDialog] = useState(false);
 
 
     useEffect(() => {
@@ -34,13 +39,7 @@ const Page = () => {
         setCategories(await api.getCategories());
 
         setLoading(false);
-    }
-
-    const handleNewProduct = () => { }
-
-    const handleEdit = (product: Product) => {}
-
-    
+    }    
 
     // Delete Product
     const handleDelete= (product: Product) => {
@@ -59,6 +58,32 @@ const Page = () => {
         }
     }
 
+    //New/Edit Product
+    const handleNewProduct = () => { 
+        setProductToEdit(undefined);
+        setEditDialogOpen(true);
+    }
+
+    const handleEdit = (product: Product) => {
+        setProductToEdit(product);
+        setEditDialogOpen(true);
+    }
+
+    const handleSaveEditDialog = async (event: FormEvent<HTMLFormElement>) => {
+        let form = new FormData(event.currentTarget);
+
+        setLoadingEditDialog(true);
+        if(productToEdit) {
+            form.append('id', productToEdit.id.toString());
+            await api.updateProduct(form);
+        } else {
+            await api.createProduct(form)
+        }
+        setLoadingEditDialog(false);
+        setEditDialogOpen(false);
+
+        getProducts();
+    }   
 
     return (
         <>
@@ -114,6 +139,15 @@ const Page = () => {
                             <Button disabled={loadingDelete} onClick={handleConfirmDelete}>Sim</Button>
                         </DialogActions>
                 </Dialog>
+
+                <ProductEditDialog 
+                    open={editDialogOpen}
+                    onClose={() => setEditDialogOpen(false)}
+                    onSave={handleSaveEditDialog}
+                    disabled={loadingEditDialog}
+                    product={productToEdit}
+                    categories={categories}
+                />
             </Box>
         </>
 
